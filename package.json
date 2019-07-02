@@ -7,7 +7,8 @@
   "author": "Ryan Matthews <ryan.matthews.professional@gmail.com>",
   "license": "MIT",
   "scripts": {
-  "start": "nodemon index.js"
+      "start": "node index.js",
+      "server": "nodemon index.js"
 },
   "dependencies": {
     "express": "^4.17.1",
