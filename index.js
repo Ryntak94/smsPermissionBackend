@@ -64,8 +64,23 @@ server.post("/students", (req, res) => {
 
 server.get("/students", (req, res)  =>  {
     db("students")
-        .then(rows  =>  {
-            res.status(200).json(rows)
+        .then(data  =>  {
+            data.length ? res.status(200).json({students: data}) : res.status(400).json({ error: "There currently are no students"})
+        })
+        .catch(err  =>  {
+            res.status(500).json({error: err})
+        })
+})
+
+server.get("/students/teacher/:teacher_id", (req, res)  =>  {
+    const { teacher_id } = req.params
+    db("students")
+        .where({ teacher_id})
+        .then(data  =>  {
+            data.length ? res.status(200).json(data) : res.status(400).json({error: "This teacher either does not exist or has 0 students"})
+        })
+        .catch(err  =>  {
+            res.status(500).json({error: err})
         })
 })
 
