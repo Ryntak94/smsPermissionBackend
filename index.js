@@ -97,3 +97,16 @@ server.put("/students/:id", (req, res)  =>  {
             res.status(400).json(err)
         })
 })
+
+server.delete("/students/:id",  (req, res)  =>  {
+    const { id } = req.params
+    db("students")
+        .where({ id })
+        .del()
+        .then(data  =>  {
+            data ? res.status(200).json({data}) : res.status(400).json({error: "Student not found"})
+        })
+        .catch(err =>   {
+            res.status(500).json({error: err})
+        })
+})
