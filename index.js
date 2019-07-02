@@ -61,3 +61,10 @@ server.post("/student", (req, res) => {
     })
     .catch(err => console.log(err.message));
 });
+
+server.get("/students", (req, res)  =>  {
+    db("students")
+        .then(rows  =>  {
+            res.status(200).json(rows)
+        })
+})
