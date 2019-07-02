@@ -22,7 +22,7 @@ server.get("/", (req, res) => {
       res.status(500).json({ error: "could not get students" });
     });
 });
-server.post("/student", (req, res) => {
+server.post("/students", (req, res) => {
   const { guardian, student } = req.body;
   const guardianContact = guardian.contact;
   db("guardians")
@@ -61,3 +61,67 @@ server.post("/student", (req, res) => {
     })
     .catch(err => console.log(err.message));
 });
+
+server.get("/students", (req, res)  =>  {
+    db("students")
+        .then(data  =>  {
+            data.length ? res.status(200).json({students: data}) : res.status(400).json({ error: "There currently are no students"})
+        })
+        .catch(err  =>  {
+            res.status(500).json({error: err})
+        })
+})
+
+server.get("/students/teacher/:teacher_id", (req, res)  =>  {
+    const { teacher_id } = req.params
+    db("students")
+        .where({ teacher_id})
+        .then(data  =>  {
+            data.length ? res.status(200).json(data) : res.status(400).json({error: "This teacher either does not exist or has 0 students"})
+        })
+        .catch(err  =>  {
+            res.status(500).json({error: err})
+        })
+})
+
+server.get("/students/:id", (req, res)  =>  {
+    const { id } = req.params
+    db("students")
+        .where({ id })
+        .first()
+        .then(data  =>  {
+            data ? res.status(200).json(data) : res.status(400).json({error: "Student not found"})
+        })
+        .catch(err  =>  {
+            res.status(500).json({error: err})
+        })
+})
+
+server.put("/students/:id", (req, res)  =>  {
+    const { student } = req.body
+    const { id } = req.params
+    console.log("here 1st")
+    db("students")
+        .where({id})
+        .update(student)
+        .then(data  =>  {
+            console.log("here", data)
+            res.status(200).json(data)
+        })
+        .catch(err  =>  {
+            res.status(400).json(err)
+        })
+})
+
+server.delete("/students/:id",  (req, res)  =>  {
+    const { id } = req.params
+    db("students")
+        .where({ id })
+        .del()
+        .then(data  =>  {
+            data ? res.status(200).json({data}) : res.status(400).json({error: "Student not found"})
+        })
+        .catch(err =>   {
+            res.status(500).json({error: err})
+        })
+})
