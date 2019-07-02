@@ -1,0 +1,22 @@
+{
+  "name": "sms-permission-backend",
+  "version": "1.0.0",
+  "description": "Backend to support the SMS Permission App",
+  "main": "index.js",
+  "repository": "https://github.com/Ryntak94/smsPermissionBackend.git",
+  "author": "Ryan Matthews <ryan.matthews.professional@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+  "start": "nodemon index.js"
+},
+  "dependencies": {
+    "express": "^4.17.1",
+    "helmet": "^3.18.0",
+    "knex": "^0.18.1",
+    "node": "^12.5.0",
+    "sqlite3": "^4.0.9"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
+  }
+}
