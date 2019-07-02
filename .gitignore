@@ -64,5 +64,5 @@ typings/
 .vscode/
 
 # DB files
-.db3
-.sqlite3
+*.db3
+*.sqlite3
