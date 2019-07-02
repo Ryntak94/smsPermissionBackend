@@ -69,6 +69,19 @@ server.get("/students", (req, res)  =>  {
         })
 })
 
+server.get("/students/:id", (req, res)  =>  {
+    const { id } = req.params
+    db("students")
+        .where({ id })
+        .first()
+        .then(data  =>  {
+            data ? res.status(200).json(data) : res.status(400).json({error: "Student not found"})
+        })
+        .catch(err  =>  {
+            res.status(500).json({error: err})
+        })
+})
+
 server.put("/students/:id", (req, res)  =>  {
     const { student } = req.body
     const { id } = req.params
