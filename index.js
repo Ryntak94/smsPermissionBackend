@@ -22,7 +22,7 @@ server.get("/", (req, res) => {
       res.status(500).json({ error: "could not get students" });
     });
 });
-server.post("/student", (req, res) => {
+server.post("/students", (req, res) => {
   const { guardian, student } = req.body;
   const guardianContact = guardian.contact;
   db("guardians")
@@ -66,5 +66,21 @@ server.get("/students", (req, res)  =>  {
     db("students")
         .then(rows  =>  {
             res.status(200).json(rows)
+        })
+})
+
+server.put("/students/:id", (req, res)  =>  {
+    const { student } = req.body
+    const { id } = req.params
+    console.log("here 1st")
+    db("students")
+        .where({id})
+        .update(student)
+        .then(data  =>  {
+            console.log("here", data)
+            res.status(200).json(data)
+        })
+        .catch(err  =>  {
+            res.status(400).json(err)
         })
 })
