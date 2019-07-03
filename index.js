@@ -6,6 +6,10 @@ const db = require("./dbConfig.js");
 const cors = require("cors")
 require("dotenv").config();
 const authRouter = require("./auth/register")
+const accountSid = process.env.TWILIOSECRET;
+const authToken = process.env.TWILIOTOKEN;
+const client = require('twilio')(accountSid, authToken);
+
 
 server.use(express.json());
 server.use(helmet());
@@ -133,6 +137,7 @@ server.delete("/students/:id",  (req, res)  =>  {
 
 server.post("/fieldTrips",  (req, res)  =>  {
     const { fieldTrip } = req.body
+    // console.log("here")
     db("fieldTrips")
         .returning("id")
         .insert(fieldTrip)
@@ -148,8 +153,21 @@ server.post("/fieldTrips",  (req, res)  =>  {
                             })
                 })
                 db("studentFieldTripJoin")
+                    .join("students", "studentFieldTripJoin.student_id", "students.id")
+                    .join("guardians", "students.guardian_id", "guardians.id")
+                    .join("fieldTrips", "studentFieldTripJoin.fieldTrip_id", "fieldTrips.id")
+                    .select("guardians.contact", {"studentName":"students.name"}, {"tripName":"fieldTrips.name"}, "fieldTrips.date", {"guardianName": "guardians.name"})
                     .where({fieldTrip_id: id[0]})
                     .then(data  =>  {
+                        data.forEach(entry  =>  {
+                            client.messages
+                                .create({
+                                    body: `Hello ${entry.guardianName}, this is an automated message about a fieldtrip coming up for your student, ${entry.studentName}. We are requestiong permission for them to attend our ${entry.tripName} on ${entry.date}. Please reply 'yes' or 'no'`,
+                                    from: process.env.FROMNUMBER,
+                                    to: process.env.TONUMBER
+                                })
+                                .then(message => console.log(message.sid));
+                        })
                         res.status(200).json(data)
                     })
                     .catch(err  =>  {

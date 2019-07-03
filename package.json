@@ -20,7 +20,8 @@
     "knex": "^0.18.1",
     "node": "^12.5.0",
     "pg": "^7.11.0",
-    "sqlite3": "^4.0.9"
+    "sqlite3": "^4.0.9",
+    "twilio": "^3.33.0"
   },
   "devDependencies": {
     "nodemon": "^1.19.1"
