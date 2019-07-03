@@ -285,3 +285,13 @@ server.post("/sms", (req, res)  =>  {
         })
 
 })
+
+server.get("/students/trip/:trip_id",   (req, res)  =>  {
+    const { trip_id } = req.params
+    db("studentFieldTripJoin")
+        .join("students", "studentFieldTripJoin.student_id", "students.id")
+        .where({fieldTrip_id: trip_id})
+        .then(data  =>  {
+            console.log(data)
+        })
+})
