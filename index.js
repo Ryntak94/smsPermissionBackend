@@ -236,3 +236,9 @@ server.delete("/fieldTrips/:id",    (req, res)  =>  {
             res.status(500).json({ error: err.message })
         })
 })
+
+server.post("/sms", (req, res)  =>  {
+    console.log("req", req)
+    console.log("req.body", req.body)
+    console.log("req.params", req.params)
+})
