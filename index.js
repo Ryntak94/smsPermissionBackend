@@ -4,6 +4,7 @@ const knex = require("knex");
 const server = express();
 const db = require("./dbConfig.js");
 require("dotenv").config();
+const authRouter = require("./auth/register");
 
 server.use(express.json());
 server.use(helmet());
@@ -12,6 +13,8 @@ const port = process.env.PORT || 8000;
 server.listen(port, function() {
   console.log(`\n=== Web API Listening on http://localhost:${port} ===\n`);
 });
+
+server.use("/", authRouter);
 
 server.get("/", (req, res) => {
   db("teachers")
@@ -62,66 +65,76 @@ server.post("/students", (req, res) => {
     .catch(err => console.log(err.message));
 });
 
-server.get("/students", (req, res)  =>  {
-    db("students")
-        .then(data  =>  {
-            data.length ? res.status(200).json({students: data}) : res.status(400).json({ error: "There currently are no students"})
-        })
-        .catch(err  =>  {
-            res.status(500).json({error: err})
-        })
-})
+server.get("/students", (req, res) => {
+  db("students")
+    .then(data => {
+      data.length
+        ? res.status(200).json({ students: data })
+        : res.status(400).json({ error: "There currently are no students" });
+    })
+    .catch(err => {
+      res.status(500).json({ error: err });
+    });
+});
 
-server.get("/students/teacher/:teacher_id", (req, res)  =>  {
-    const { teacher_id } = req.params
-    db("students")
-        .where({ teacher_id})
-        .then(data  =>  {
-            data.length ? res.status(200).json(data) : res.status(400).json({error: "This teacher either does not exist or has 0 students"})
-        })
-        .catch(err  =>  {
-            res.status(500).json({error: err})
-        })
-})
+server.get("/students/teacher/:teacher_id", (req, res) => {
+  const { teacher_id } = req.params;
+  db("students")
+    .where({ teacher_id })
+    .then(data => {
+      data.length
+        ? res.status(200).json(data)
+        : res.status(400).json({
+            error: "This teacher either does not exist or has 0 students"
+          });
+    })
+    .catch(err => {
+      res.status(500).json({ error: err });
+    });
+});
 
-server.get("/students/:id", (req, res)  =>  {
-    const { id } = req.params
-    db("students")
-        .where({ id })
-        .first()
-        .then(data  =>  {
-            data ? res.status(200).json(data) : res.status(400).json({error: "Student not found"})
-        })
-        .catch(err  =>  {
-            res.status(500).json({error: err})
-        })
-})
+server.get("/students/:id", (req, res) => {
+  const { id } = req.params;
+  db("students")
+    .where({ id })
+    .first()
+    .then(data => {
+      data
+        ? res.status(200).json(data)
+        : res.status(400).json({ error: "Student not found" });
+    })
+    .catch(err => {
+      res.status(500).json({ error: err });
+    });
+});
 
-server.put("/students/:id", (req, res)  =>  {
-    const { student } = req.body
-    const { id } = req.params
-    console.log("here 1st")
-    db("students")
-        .where({id})
-        .update(student)
-        .then(data  =>  {
-            console.log("here", data)
-            res.status(200).json(data)
-        })
-        .catch(err  =>  {
-            res.status(400).json(err)
-        })
-})
+server.put("/students/:id", (req, res) => {
+  const { student } = req.body;
+  const { id } = req.params;
+  console.log("here 1st");
+  db("students")
+    .where({ id })
+    .update(student)
+    .then(data => {
+      console.log("here", data);
+      res.status(200).json(data);
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
+});
 
-server.delete("/students/:id",  (req, res)  =>  {
-    const { id } = req.params
-    db("students")
-        .where({ id })
-        .del()
-        .then(data  =>  {
-            data ? res.status(200).json({data}) : res.status(400).json({error: "Student not found"})
-        })
-        .catch(err =>   {
-            res.status(500).json({error: err})
-        })
-})
+server.delete("/students/:id", (req, res) => {
+  const { id } = req.params;
+  db("students")
+    .where({ id })
+    .del()
+    .then(data => {
+      data
+        ? res.status(200).json({ data })
+        : res.status(400).json({ error: "Student not found" });
+    })
+    .catch(err => {
+      res.status(500).json({ error: err });
+    });
+});
