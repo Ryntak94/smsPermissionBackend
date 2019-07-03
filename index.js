@@ -165,9 +165,55 @@ server.put("/fieldTrips/:id",   (req, res)  =>  {
         .where({ id })
         .update(fieldTrip)
         .then(data  =>  {
-            res.status(200).json({data})
+            data !== 0 ?
+            res.status(200).json({data}) :
+            res.status(400).json({ error: "Could not find the requested plan"})
         })
         .catch(err  =>  {
             res.status(500).json({error: err.message})
+        })
+})
+
+server.get("/fieldTrips/:id",   (req, res)  =>  {
+    const { id } = req.params
+    db("fieldTrips")
+        .where({ id })
+        .then(data  =>  {
+            data.length ?
+            res.status(200).json({data}) :
+            res.status(400).json({ error: "Fieldtrip not found"})
+        })
+        .catch(err  =>  {
+            res.status(500).json({error: err.message})
+        })
+})
+
+server.get("/fieldTrips/teachers/:teacher_id",   (req, res)  =>  {
+    const { teacher_id } = req.params
+    db("fieldtrips")
+        .where({ teacher_id })
+        .then(data  =>  {
+            data.length ?
+            res.status(200).json(data) :
+            res.status(400).json({ error: "Teacher has no fieldtrips"})
+        })
+        .catch(err  =>  {
+            res.status(500).json({ error: err.message })
+        })
+})
+
+server.delete("/fieldTrips/:id",    (req, res)  =>  {
+    const { id } = req.params
+    db("fieldtrips")
+        .where({ id })
+        .del()
+        .then(data  =>  {
+            console.log(data)
+            data !== 0 ?
+            res.status(200).json(data) :
+            res.status(400).json({ error: "No fieldtrip with this id"})
+        })
+        .catch(err  =>  {
+            res.status(500).json({ error: err.message })
         })
 })
