@@ -134,6 +134,7 @@ server.delete("/students/:id",  (req, res)  =>  {
 server.post("/fieldTrips",  (req, res)  =>  {
     const { fieldTrip } = req.body
     db("fieldTrips")
+        .returning("id")
         .insert(fieldTrip)
         .then(id    =>  {
             db("students")
