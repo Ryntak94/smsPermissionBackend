@@ -66,3 +66,4 @@ typings/
 # DB files
 *.db3
 *.sqlite3
+dev.sqlite
