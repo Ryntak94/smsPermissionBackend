@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const express = require("express");
 const router = express.Router();
 
+
 // const { authenticate } = require("./authenticate");
 
 router.post("/register", (req, res) => {
@@ -22,7 +23,7 @@ router.post("/register", (req, res) => {
         res.status(201).json({ id: id[0], token: token });
       })
       .catch(err => {
-        res.status(500).json({ message: "internal error registering user" });
+        res.status(500).json({ message:  err.message });
       });
   }
 });

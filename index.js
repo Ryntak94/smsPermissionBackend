@@ -5,6 +5,7 @@ const server = express();
 const db = require("./dbConfig.js");
 const cors = require("cors")
 require("dotenv").config();
+const authRouter = require("./auth/register")
 
 server.use(express.json());
 server.use(helmet());
@@ -14,6 +15,8 @@ const port = process.env.PORT || 8000;
 server.listen(port, function() {
   console.log(`\n=== Web API Listening on http://localhost:${port} ===\n`);
 });
+
+server.use("/auth", authRouter)
 
 server.get("/", (req, res) => {
   db("teachers")
