@@ -153,10 +153,10 @@ server.post("/fieldTrips",  (req, res)  =>  {
                             })
                 })
                 db("studentFieldTripJoin")
+                    .join("fieldTrips", "studentFieldTripJoin.fieldTrip_id", "fieldTrips.id")
                     .join("students", "studentFieldTripJoin.student_id", "students.id")
                     .join("guardians", "students.guardian_id", "guardians.id")
-                    .join("fieldTrips", "studentFieldTripJoin.fieldTrip_id", "fieldTrips.id")
-                    .select("guardians.contact", {"guardian_id": "guardians.id"}, {"guardianName": "guardians.name"},{"studentName":"students.name"},{"student_id": "students.id"}, {"tripName":"fieldTrips.name"}, "fieldTrips.date", {"fieldTrip_id": "fieldtrips.id"})
+                    .select("guardians.contact", {"guardian_id": "guardians.id"}, {"guardianName": "guardians.name"},{"studentName":"students.name"},{"student_id": "students.id"}, {"tripName":"fieldTrips.name"}, "fieldTrips.date", {"fieldTrip_id": "fieldTrips.id"})
                     .where({fieldTrip_id: id[0]})
                     .then(data  =>  {
                         data.forEach(entry  =>  {
