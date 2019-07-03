@@ -144,7 +144,6 @@ server.post("/fieldTrips",  (req, res)  =>  {
                 db("studentFieldTripJoin")
                     .where({fieldTrip_id: id[0]})
                     .then(data  =>  {
-                        console.log("this is whats being returned")
                         res.status(200).json(data)
                     })
                     .catch(err  =>  {
