@@ -164,7 +164,7 @@ server.post("/fieldTrips",  (req, res)  =>  {
                                 .create({
                                     body: `Hello ${entry.guardianName}, this is an automated message about a fieldtrip coming up for your student, ${entry.studentName}. We are requestiong permission for them to attend our ${entry.tripName} on ${entry.date}. Please reply 'yes' or 'no'`,
                                     from: process.env.FROMNUMBER,
-                                    to: process.env.TONUMBER
+                                    to: entry.contact
                                 })
                                 .then(message => console.log(message.sid));
                                 db("smsOutgoing")
