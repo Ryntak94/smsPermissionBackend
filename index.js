@@ -292,6 +292,9 @@ server.get("/students/trip/:trip_id",   (req, res)  =>  {
         .join("students", "studentFieldTripJoin.student_id", "students.id")
         .where({fieldTrip_id: trip_id})
         .then(data  =>  {
-            console.log(data)
+            res.status(200).json(data)
+        })
+        .catch(err  =>  {
+            res.status(400).json({error: err.message})
         })
 })
