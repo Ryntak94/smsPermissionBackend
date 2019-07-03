@@ -2,6 +2,7 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTable('studentFieldTripJoin',    table   =>  {
       table.increments();
+      table.integer("status").notNullable()
       table
         .integer("fieldTrip_id")
         .unsigned()
