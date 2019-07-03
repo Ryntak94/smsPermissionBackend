@@ -217,7 +217,7 @@ server.get("/fieldTrips/:id",   (req, res)  =>  {
 
 server.get("/fieldTrips/teachers/:teacher_id",   (req, res)  =>  {
     const { teacher_id } = req.params
-    db("fieldtrips")
+    db("fieldTrips")
         .where({ teacher_id })
         .then(data  =>  {
             data.length ?
