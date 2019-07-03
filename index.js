@@ -7,7 +7,7 @@ require("dotenv").config();
 
 server.use(express.json());
 server.use(helmet());
-server.use(crors())
+server.use(cors())
 
 const port = process.env.PORT || 8000;
 server.listen(port, function() {
