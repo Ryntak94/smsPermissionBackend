@@ -3,11 +3,12 @@ const helmet = require("helmet");
 const knex = require("knex");
 const server = express();
 const db = require("./dbConfig.js");
+const cors = require("cors")
 require("dotenv").config();
 
 server.use(express.json());
 server.use(helmet());
-server.use(crors())
+server.use(cors())
 
 const port = process.env.PORT || 8000;
 server.listen(port, function() {
@@ -152,4 +153,18 @@ server.post("/fieldTrips",  (req, res)  =>  {
                     })
         })
     })
+})
+
+server.put("/fieldTrips/:id",   (req, res)  =>  {
+    const { fieldTrip } = req.body
+    const { id } = req.params
+    db("fieldTrips")
+        .where({ id })
+        .update(fieldTrip)
+        .then(data  =>  {
+            res.status(200).json({data})
+        })
+        .catch(err  =>  {
+            res.status(500).json({error: err.message})
+        })
 })
